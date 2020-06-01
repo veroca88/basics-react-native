@@ -9,15 +9,35 @@ import {
   TouchableOpacity,
   Button,
   Alert,
+  Platform,
+  StatusBar,
+  Dimensions,
 } from "react-native";
 
+import {
+  useDimensions,
+  useDeviceOrientation,
+} from "@react-native-community/hooks";
+
 export default function App() {
+  // console.log(useDeviceOrientation());
+  // console.log(useDimensions());
+  // console.log("Dimensions", Dimensions.get("screen"));
+  const { landscape } = useDeviceOrientation();
   const handlePress = () => {
     console.log(require("./assets/icon.png"));
     // console.log("text press");
   };
   return (
-    <SafeAreaView style={styles.container}>
+    // <SafeAreaView style={containerStyle}>
+    <SafeAreaView style={[styles.container, containerStyle]}>
+      <View
+        style={{
+          backgroundColor: "gray",
+          width: "100%",
+          height: landscape ? "100%" : "30%",
+        }}
+      ></View>
       <Text numberOfLines={10} onPress={handlePress}>
         Hello World!! Contrary to popular belief, Lorem Ipsum is not simply
         random text. It has roots in a piece of classical Latin literature from
@@ -45,19 +65,28 @@ export default function App() {
         <Button
           title="Click me"
           onPress={() => {
-            alert("Button clicked");
+            Alert.alert("My tittle", "My message", [
+              { text: "Yes", onPress: () => console.log("YES") },
+              { text: "No", onPress: () => console.log("NO") },
+            ]);
+            //ONLY WORKS IN IOS
+            // Alert.prompt("My title", "My message", (textUserInput) =>
+            //   console.log(textUserInput)
+            // );
           }}
         />
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
+const containerStyle = { backgroundColor: "orange" };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fda7cb",
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
