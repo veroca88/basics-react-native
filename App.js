@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Button,
+  Alert,
 } from "react-native";
 
 export default function App() {
